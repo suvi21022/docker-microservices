@@ -56,12 +56,19 @@ def get_notes():
 
 @app.route("/notes", methods=["POST"])
 def add_note():
-    data = request.get_json(silent=True) or {}
-    title = data.get("title", "").strip()
-    content = data.get("content", "").strip()
+    data = request.get_json(silent=True)
+
+    if not isinstance(data, dict):
+        return {"error": "Request body must be a JSON object"}, 400
+
+    title = data.get("title", "")
+    content = data.get("content", "")
 
     if not isinstance(title, str) or not isinstance(content, str):
         return {"error": "Title and content must be text"}, 400
+
+    title = title.strip()
+    content = content.strip()
 
     if not title or not content:
         return {"error": "Title and content are required"}, 400
