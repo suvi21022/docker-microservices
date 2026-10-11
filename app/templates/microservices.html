@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Microservices & APIs | Docker Learning Hub{% endblock %}
+
+{% block content %}
+<section>
+    <h2>🔗 What Is a Microservice Architecture?</h2>
+
+    <p>
+        A microservice architecture structures an application as a set
+        of services with distinct responsibilities. Services communicate
+        through defined interfaces, often using HTTP APIs.
+    </p>
+
+    <p>
+        Each service can focus on a particular task, such as serving
+        a user interface, processing application data, or storing
+        information in a database.
+    </p>
+
+    <p>
+        Containers make services easier to package and run consistently.
+        However, using Docker does not automatically make an application
+        a microservice architecture: the responsibilities and
+        communication between services matter too.
+    </p>
+</section>
+
+<section>
+    <h2>The Application Architecture</h2>
+
+    <p>
+        Docker Learning Hub has three services. Each has a different
+        responsibility, and together they provide a working application.
+    </p>
+
+    <h3>1. Web application</h3>
+    <p>
+        The web service uses Flask and Gunicorn to serve the website.
+        It renders HTML pages and sends HTTP requests to the API.
+    </p>
+
+    <h3>2. API service</h3>
+    <p>
+        The API receives requests to retrieve or create notes.
+        It validates the submitted data and performs database operations.
+    </p>
+
+    <h3>3. PostgreSQL database</h3>
+    <p>
+        PostgreSQL stores the notes. The API connects to the database
+        using the database service name and credentials supplied
+        through environment variables.
+    </p>
+
+    <pre><code>Browser
+   |
+   v
+Web service (Flask + Gunicorn)
+   |
+   | HTTP requests
+   v
+API service (Flask)
+   |
+   | SQL queries
+   v
+PostgreSQL database</code></pre>
+
+    <p>
+        The web service is published on the host at
+        <code>localhost:5001</code>. The API and database do not need
+        published host ports for the other containers to reach them
+        over the Compose network.
+    </p>
+</section>
+
+<section>
+    <h2>What Is an API?</h2>
+
+    <p>
+        An Application Programming Interface (API) defines how
+        software components can interact. A web API commonly uses
+        HTTP methods to perform operations on resources.
+    </p>
+
+    <h3>GET — retrieve data</h3>
+    <p>
+        The API supports <code>GET /notes</code>, which returns the
+        notes stored in PostgreSQL.
+    </p>
+
+    <h3>POST — create data</h3>
+    <p>
+        The API supports <code>POST /notes</code>, which accepts a
+        note title and content in JSON format, validates the input,
+        and stores the new note.
+    </p>
+
+    <h3>Health checks</h3>
+    <p>
+        The API's <code>/health</code> endpoint checks whether it can
+        communicate with the database. The web application's
+        <code>/health</code> endpoint checks the API and reports
+        its status.
+    </p>
+</section>
+
+<section>
+    <h2>Why Separate the Services?</h2>
+
+    <ul>
+        <li>
+            <strong>Separation of responsibilities:</strong>
+            The web interface does not need to manage SQL queries itself.
+        </li>
+        <li>
+            <strong>Maintainability:</strong>
+            The API and web interface can be developed separately.
+        </li>
+        <li>
+            <strong>Reproducibility:</strong>
+            Docker packages each service with its required dependencies.
+        </li>
+        <li>
+            <strong>Persistence:</strong>
+            PostgreSQL stores application data in a named volume.
+        </li>
+    </ul>
+
+    <p>
+        This is a small educational example of a multi-service
+        architecture. It demonstrates separation of responsibilities
+        without the operational complexity of a large production system.
+    </p>
+</section>
+{% endblock %}

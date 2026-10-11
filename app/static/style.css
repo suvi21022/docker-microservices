@@ -1,0 +1,164 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    line-height: 1.7;
+    color: #293347;
+    background: #f5f7fc;
+}
+
+header {
+    padding: 40px 20px;
+    text-align: center;
+    color: white;
+    background: #1769aa;
+}
+
+header h1 {
+    margin-bottom: 5px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 22px;
+    padding: 15px;
+    background: #104e80;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    width: min(900px, 92%);
+    margin: 30px auto;
+}
+
+section {
+    margin-bottom: 24px;
+    padding: 25px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 3px 12px #1b31500d;
+    scroll-margin-top: 20px;
+}
+
+h2 {
+    color: #1769aa;
+}
+
+pre {
+    overflow-x: auto;
+    padding: 15px;
+    border-radius: 8px;
+    color: #e8f1ff;
+    background: #202a3a;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccd5e2;
+    border-radius: 7px;
+    font: inherit;
+}
+
+button {
+    justify-self: start;
+    padding: 11px 20px;
+    border: 0;
+    border-radius: 7px;
+    color: white;
+    background: #1769aa;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #104e80;
+}
+
+.note {
+    margin-top: 16px;
+    padding: 15px;
+    border-left: 4px solid #1769aa;
+    background: #eef5fc;
+    overflow-wrap: anywhere;
+}
+
+.note h3 {
+    margin-top: 0;
+}
+
+footer {
+    padding: 25px;
+    text-align: center;
+    color: #536176;
+}
+
+@media (max-width: 600px) {
+    nav {
+        gap: 12px;
+    }
+
+    section {
+        padding: 18px;
+    }
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.topic-card {
+    display: block;
+    padding: 20px;
+    border: 1px solid #dce6f1;
+    border-radius: 10px;
+    color: #293347;
+    background: #f5f9fe;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.topic-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px #1b31501a;
+    border-color: #1769aa;
+}
+
+.topic-card h3 {
+    margin-top: 0;
+    color: #1769aa;
+}
+
+.topic-card p {
+    margin-bottom: 0;
+}
+
+.error {
+    padding: 12px;
+    border-left: 4px solid #c0392b;
+    border-radius: 4px;
+    color: #922b21;
+    background: #fcebea;
+}

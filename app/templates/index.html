@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Learning Hub</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🐳 Docker Learning Hub</h1>
+        <p>A practical guide to containers and modern deployment</p>
+    </header>
+
+    <nav>
+        <a href="#docker">Docker</a>
+        <a href="#compose">Docker Compose</a>
+        <a href="#microservices">Microservices</a>
+        <a href="#notes">My Notes</a>
+    </nav>
+
+    <main>
+        <section id="intro">
+            <h2>Welcome!</h2>
+            <p>
+                This learning hub introduces Docker and the technologies
+                used to build, run, and deploy containerized applications.
+                Explore the topics and save your own notes below.
+            </p>
+        </section>
+
+        <section id="docker">
+            <h2>1. Docker</h2>
+            <p>
+                Docker packages an application and its dependencies into
+                an image. A container is a running instance of that image.
+            </p>
+            <ul>
+                <li><strong>Image:</strong> A template used to create containers.</li>
+                <li><strong>Container:</strong> An isolated running environment.</li>
+                <li><strong>Dockerfile:</strong> Instructions for building an image.</li>
+                <li><strong>Volume:</strong> Storage that can persist beyond a container's lifetime.</li>
+                <li><strong>Port mapping:</strong> Makes a container service accessible from the host.</li>
+            </ul>
+        </section>
+
+        <section id="compose">
+            <h2>2. Docker Compose</h2>
+            <p>
+                Docker Compose defines and manages multi-container
+                applications using a YAML configuration file.
+            </p>
+            <p>
+                Services, networks, volumes, and environment variables
+                can be described in one place and started together.
+            </p>
+            <pre><code>docker compose up --build
+docker compose ps
+docker compose down</code></pre>
+        </section>
+
+        <section id="microservices">
+            <h2>3. Microservices</h2>
+            <p>
+                A microservice architecture divides an application into
+                smaller services with clearly defined responsibilities.
+                Services communicate through interfaces such as HTTP APIs.
+            </p>
+            <p>
+                Containers can make services easier to package and deploy
+                independently. However, using Docker alone does not
+                automatically make an application a microservice system.
+            </p>
+        </section>
+
+        <section id="notes">
+            <h2>4. My Notes</h2>
+                {% if api_error %}
+                    <p class="error">
+                        The notes service is currently unavailable.
+                        Please try again shortly.
+                    </p>
+                {% endif %}
+
+            <form action="{{ url_for('add_note') }}" method="post">
+                <label for="title">Note title</label>
+                <input id="title" name="title" maxlength="120"
+                       required placeholder="e.g. Docker volumes">
+
+                <label for="content">Note content</label>
+                <textarea id="content" name="content" rows="4"
+                          maxlength="5000" required
+                          placeholder="Write what you learned..."></textarea>
+
+                <button type="submit">Save note</button>
+            </form>
+
+            <div class="notes-list">
+                {% for note in notes %}
+                    <article class="note">
+                        <h3>{{ note["title"] }}</h3>
+                        <p>{{ note["content"] }}</p>
+                    </article>
+                {% else %}
+                    <p>No notes yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Docker Learning Hub · Flask, Gunicorn and PostgreSQL</p>
+        <p><a href="{{ url_for('health') }}">Application health check</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Docker Learning Hub{% endblock %}</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🐳 Docker Learning Hub</h1>
+        <p>Learn, experiment, and document your journey</p>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('docker_page') }}">Docker</a>
+        <a href="{{ url_for('compose_page') }}">Docker Compose</a>
+        <a href="{{ url_for('microservices_page') }}">Microservices & APIs</a>
+        <a href="{{ url_for('index') }}#notes">My Notes</a>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>Docker Learning Hub · Flask, Gunicorn and PostgreSQL</p>
+        <p><a href="{{ url_for('health') }}">Application health check</a></p>
+    </footer>
+</body>
+</html>

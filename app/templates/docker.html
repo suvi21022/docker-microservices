@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Docker | Docker Learning Hub{% endblock %}
+
+{% block content %}
+<section>
+    <h2>🐳 What Is Docker?</h2>
+
+    <p>
+        Docker is a platform for packaging and running applications
+        in containers. Containers include the application and its
+        dependencies, helping the application run consistently
+        across different environments.
+    </p>
+
+    <p>
+        Instead of installing every dependency directly on a computer,
+        we can build an image and use it to create containers.
+    </p>
+</section>
+
+<section>
+    <h2>Core Docker Concepts</h2>
+
+    <h3>Image</h3>
+    <p>
+        An image is a packaged template containing the files and
+        dependencies needed to run an application. Images can be
+        built from a Dockerfile.
+    </p>
+
+    <h3>Container</h3>
+    <p>
+        A container is an instance of an image running as an isolated
+        process. We can start, stop, and remove containers independently
+        of the images they were created from.
+    </p>
+
+    <h3>Dockerfile</h3>
+    <p>
+        A Dockerfile contains instructions for building an image,
+        such as choosing a base image, installing dependencies,
+        and defining the startup command.
+    </p>
+
+    <h3>Ports</h3>
+    <p>
+        Port mapping allows services inside a container to be accessed
+        through a port on the host computer.
+    </p>
+
+    <h3>Volumes</h3>
+    <p>
+        Volumes provide persistent storage that can remain available
+        even when a container is removed. They are useful for data
+        that should survive container replacement, such as database data.
+    </p>
+</section>
+
+<section>
+    <h2>This Project's Dockerfile</h2>
+
+    <p>
+        This web service uses a Dockerfile to build a Python environment,
+        install the application's dependencies, copy in the source code,
+        and start the Flask application with Gunicorn.
+    </p>
+
+    <pre><code>FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY app/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/ .
+
+EXPOSE 5000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:5000",
+     "--workers", "2", "--access-logfile", "-", "app:app"]</code></pre>
+
+    <p>
+        <strong>Note:</strong> EXPOSE documents the container's intended
+        listening port. The actual host-to-container port mapping is
+        configured in Docker Compose.
+    </p>
+</section>
+
+<section>
+    <h2>Useful Docker Commands</h2>
+
+    <p>These commands help inspect and manage containers and images.</p>
+
+    <pre><code># List running containers
+docker ps
+
+# List available images
+docker images
+
+# Build an image
+docker build -t learning-hub .
+
+# Run a container and map port 5000
+docker run -p 5000:5000 learning-hub
+
+# View container logs
+docker logs CONTAINER_NAME</code></pre>
+
+    <p>
+        The final command examples are for learning purposes.
+        In this project, Docker Compose manages the web, API,
+        and database services together.
+    </p>
+</section>
+{% endblock %}

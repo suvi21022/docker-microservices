@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Docker Compose | Docker Learning Hub{% endblock %}
+
+{% block content %}
+<section>
+    <h2>⚙️ What Is Docker Compose?</h2>
+
+    <p>
+        Docker Compose is a tool for defining and running applications
+        that consist of multiple containers. Instead of starting each
+        container manually, we describe the services in a YAML file
+        named compose.yaml.
+    </p>
+
+    <p>
+        Compose can configure image builds, ports, environment variables,
+        networks, storage, dependencies, and health checks in one place.
+    </p>
+</section>
+
+<section>
+    <h2>The Three Services</h2>
+
+    <h3>1. Web</h3>
+    <p>
+        The web service runs a Flask application using Gunicorn.
+        It serves the website and sends requests to the API.
+        Port 5001 on the host is mapped to port 5000 in the container.
+    </p>
+
+    <h3>2. API</h3>
+    <p>
+        The API provides HTTP endpoints for retrieving and saving notes.
+        It receives requests from the web service and communicates
+        with PostgreSQL.
+    </p>
+
+    <h3>3. Database</h3>
+    <p>
+        The database service uses PostgreSQL to store notes.
+        A named Docker volume keeps database data persistent across
+        ordinary container replacements.
+    </p>
+</section>
+
+<section>
+    <h2>Example from compose.yaml</h2>
+
+    <p>
+        This simplified example shows how the web service connects
+        to the API and how the API depends on the database.
+        The full configuration contains additional settings.
+    </p>
+
+    <pre><code>services:
+  web:
+    build: .
+    ports:
+      - "5001:5000"
+    environment:
+      API_HOST: api
+      API_PORT: "5000"
+    depends_on:
+      api:
+        condition: service_started
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    environment:
+      DB_HOST: db
+      DB_NAME: learninghub
+      DB_USER: learninguser
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:</code></pre>
+
+    <p>
+        <strong>Environment variables</strong> allow services to receive
+        configuration without hardcoding it in the application source.
+        The database password is stored in a local .env file, which
+        should not be committed to Git.
+    </p>
+</section>
+
+<section>
+    <h2>Useful Docker Compose Commands</h2>
+
+    <pre><code># Validate and render the Compose configuration
+docker compose config
+
+# Build images and start all services
+docker compose up --build
+
+# List services and their status
+docker compose ps
+
+# Follow service logs
+docker compose logs -f
+
+# Stop and remove project containers and network
+docker compose down</code></pre>
+
+    <p>
+        The <code>docker compose up --build</code> command builds the
+        required images and starts the services. Compose also creates
+        the project network so services can communicate using their
+        service names, such as <code>api</code> and <code>db</code>.
+    </p>
+
+    <p>
+        The <code>docker compose down</code> command does not normally
+        delete named volumes. Avoid adding <code>-v</code> when you
+        want to preserve your database data.
+    </p>
+</section>
+
+<section>
+    <h2>Why Use Docker Compose?</h2>
+
+    <ul>
+        <li>All services are described in one configuration file.</li>
+        <li>The environment is easier to reproduce on another computer.</li>
+        <li>Services can communicate through a project network.</li>
+        <li>Persistent storage can be configured alongside the services.</li>
+        <li>Configuration changes can be version-controlled with the project.</li>
+    </ul>
+</section>
+{% endblock %}

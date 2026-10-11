@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Docker Learning Hub{% endblock %}
+
+{% block content %}
+<section>
+    <h2>Welcome to Docker Learning Hub!</h2>
+
+    <p>
+        This learning hub introduces Docker and the technologies used
+        to build, run, and deploy containerized applications.
+    </p>
+
+    <p>
+        Explore the topics below to learn how containers, Docker Compose,
+        APIs, and databases work together.
+    </p>
+</section>
+
+<section>
+    <h2>Explore the Topics</h2>
+
+    <div class="card-grid">
+        <a class="topic-card" href="{{ url_for('docker_page') }}">
+            <h3>🐳 Docker</h3>
+            <p>Learn about images, containers, Dockerfiles, and volumes.</p>
+        </a>
+
+        <a class="topic-card" href="{{ url_for('compose_page') }}">
+            <h3>⚙️ Docker Compose</h3>
+            <p>Discover how to configure and run multiple services together.</p>
+        </a>
+
+        <a class="topic-card" href="{{ url_for('microservices_page') }}">
+            <h3>🔗 Microservices & APIs</h3>
+            <p>Explore how separate services communicate with each other.</p>
+        </a>
+    </div>
+</section>
+
+<section id="notes">
+    <h2>My Notes</h2>
+    <p>Save personal notes about what you learn.</p>
+
+    {% if api_error %}
+        <p class="error">
+            The notes service is currently unavailable.
+            Please try again shortly.
+        </p>
+    {% endif %}
+
+    <form action="{{ url_for('add_note') }}" method="post">
+        <label for="title">Note title</label>
+        <input
+            id="title"
+            name="title"
+            maxlength="120"
+            required
+            placeholder="e.g. Docker volumes"
+        >
+
+        <label for="content">Note content</label>
+        <textarea
+            id="content"
+            name="content"
+            rows="4"
+            maxlength="5000"
+            required
+            placeholder="Write what you learned..."
+        ></textarea>
+
+        <button type="submit">Save note</button>
+    </form>
+
+    <div class="notes-list">
+        {% for note in notes %}
+            <article class="note">
+                <h3>{{ note["title"] }}</h3>
+                <p>{{ note["content"] }}</p>
+            </article>
+        {% else %}
+            <p>No notes yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
